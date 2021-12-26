@@ -4,11 +4,13 @@
  */
 package com.hutech.appthitracnghiemonline.server.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author PC
  */
-public class CauHoi {
+public class CauHoi implements  Serializable{
     public static final int CAU_A = 1;
     public static final int CAU_B = 2;
     public static final int CAU_C = 3;
@@ -36,8 +38,8 @@ public class CauHoi {
 
     @Override
     public String toString() {
-        return this.noiDung + "\n" + "Cau A: " + this.cauA + "\n" + "Cau B: " + this.cauB
-                + "\n" + "Cau C:" + this.cauC + "\n" + "Cau D: " + this.cauD;
+        return this.noiDung + "\n" + "Câu A: " + this.cauA + "\n" + "Câu B: " + this.cauB
+                + "\n" + "Câu C: " + this.cauC + "\n" + "Câu D: " + this.cauD + "\n";
     }
     
     

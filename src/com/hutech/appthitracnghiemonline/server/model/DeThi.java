@@ -4,6 +4,7 @@
  */
 package com.hutech.appthitracnghiemonline.server.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author PC
  */
-public class DeThi {
+public class DeThi implements  Serializable {
     public String maDe;
     public String tenDe;
     public List<CauHoi> dsCauHoi;
@@ -28,10 +29,10 @@ public class DeThi {
     @Override
     public String toString() {
         String str = "";
-        str += "De Thi: " + this.tenDe + "\n";
+        str += "Đề Thi: " + this.tenDe + "\n";
         int i = 1;
         for (CauHoi cauHoi : dsCauHoi) {
-            str+= "Cau " + i + ": ";
+            str+= "Câu " + i + ": ";
             str += cauHoi.toString();
             str += "\n";
             i++;

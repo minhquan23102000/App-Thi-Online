@@ -6,6 +6,10 @@ package com.hutech.appthitracnghiemonline.server;
 
 import com.hutech.appthitracnghiemonline.server.model.*;
 import com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +19,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -47,7 +52,7 @@ public class DbRequester {
             String query = "SELECT * FROM DeThi WHERE maDe = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, maDe);
-            var rs = preparedStatement.executeQuery();
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 //Get de thi
                 dethi.maDe = rs.getString("maDe");
@@ -56,7 +61,7 @@ public class DbRequester {
 
                 //Get danh sach cau hoi cua de thi
                 String cauhoiQuery = "SELECT * FROM CauHoi WHERE maDe = '" + maDe + "'";
-                var newrs = stmt.executeQuery(cauhoiQuery);
+                ResultSet newrs = stmt.executeQuery(cauhoiQuery);
                 while (newrs.next()) {
                     int maCauHoi = newrs.getInt("maCauHoi");
                     String noiDung = newrs.getString("noiDung");
@@ -139,7 +144,7 @@ public class DbRequester {
             Logger.getLogger(DbRequester.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void closeConn() {
         try {
             con.close();
