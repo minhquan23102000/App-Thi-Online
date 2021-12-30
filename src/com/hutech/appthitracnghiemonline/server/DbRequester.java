@@ -40,6 +40,17 @@ public class DbRequester {
         }
 
     }
+    
+    public DbRequester(String username, String password) {
+        try {
+            DbConnector connector = new DbConnector();
+            con = connector.getConnection(username, password);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
 
     /**
      * Hàm lấy đề thi, truyền vào tham số mã đề, kết quả trả về đối tượng DeThi.

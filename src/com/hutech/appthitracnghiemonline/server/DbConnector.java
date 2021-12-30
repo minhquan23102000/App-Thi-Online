@@ -34,4 +34,25 @@ public class DbConnector {
         }
         
     }
+    
+      public Connection getConnection(String username, String password) {
+        String connectionUrl =
+                "jdbc:sqlserver://localhost:1433;"
+                        + "database=BAITHI;"
+                        + "user=" +username + ";"
+                        + "password=" + password + ";"
+                        + "loginTimeout=30;";
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            System.out.println("Start to connect to database");
+            Connection con = DriverManager.getConnection(connectionUrl);
+            System.out.println("Get connection successfully");
+            return con;
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString(),"Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println(e.getMessage());
+            return null;
+        }
+        
+    }
 }
