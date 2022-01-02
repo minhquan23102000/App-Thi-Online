@@ -39,7 +39,7 @@ public class BaiThi {
         float diem = 0;
         for (CauLam cauLam : dsCauLam) {
             if (cauLam.cauChon == cauLam.cauHoi.cauDung) {
-                diem += 0.25;
+                diem += 1;
             }
         }
         this.ketQua = diem;

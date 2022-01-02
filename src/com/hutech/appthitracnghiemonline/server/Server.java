@@ -16,7 +16,7 @@ import java.util.*;
  *
  * @author PC
  */
-public class Test {
+public class Server {
 
     public static Scanner sc = new Scanner(System.in);
 

@@ -5,6 +5,10 @@
  */
 package com.hutech.appthitracnghiemonline.client.da;
 
+import static com.hutech.appthitracnghiemonline.client.Client.client;
+import com.hutech.appthitracnghiemonline.server.model.DeThi;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 

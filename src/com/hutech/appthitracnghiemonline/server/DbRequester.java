@@ -156,6 +156,29 @@ public class DbRequester {
         }
     }
     
+    public String Login(String UserName, String Password) throws SQLException, ClassNotFoundException, Exception {
+        stmt = con.createStatement();
+        String query = "SELECT mssv, password FROM SinhVien where [mssv] =? and [password] =?";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, UserName);
+            preparedStatement.setString(2, Password);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            String result = "";
+            if (rs.next()) {
+                return result = "1";
+            } else {
+                return result = "0";
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
     public void closeConn() {
         try {
             con.close();
