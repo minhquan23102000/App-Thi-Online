@@ -14,11 +14,11 @@ import javax.swing.JOptionPane;
  * @author PC
  */
 public class DbConnector {
-    public Connection getConnection() {
+    public static Connection getConnection() {
         String connectionUrl =
                 "jdbc:sqlserver://localhost:1433;"
                         + "database=BAITHI;"
-                        + "user=yup;"
+                        + "user=VANHA;"
                         + "password=123456;"
                         + "loginTimeout=30;";
         try {
