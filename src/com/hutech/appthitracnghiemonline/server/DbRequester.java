@@ -192,7 +192,7 @@ public class DbRequester {
             Logger.getLogger(DbRequester.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-<<<<<<< Updated upstream
+
     
     public String Login(String UserName, String Password) throws SQLException, ClassNotFoundException, Exception {
         stmt = con.createStatement();
@@ -216,10 +216,7 @@ public class DbRequester {
         }
         return null;
     }
-    
-=======
 
->>>>>>> Stashed changes
     public void closeConn() {
         try {
             con.close();

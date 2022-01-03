@@ -276,6 +276,7 @@ public class frmPort extends javax.swing.JFrame {
             Socket sk = connect();
             new frmLogin(sk).setVisible(true);
             this.setVisible(false);
+            
         } catch (Exception ex) {
             Logger.getLogger(frmPort.class.getName()).log(Level.SEVERE, null, ex);
         }

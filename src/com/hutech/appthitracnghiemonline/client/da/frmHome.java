@@ -47,7 +47,7 @@ public class frmHome extends javax.swing.JFrame {
         gui.flush();
 //        while (nhan.available() > 0) {
         System.out.println("" + nhan.available());
-        DeThi made;
+        DeThi made = null;
         try {
             made = (DeThi) nhan.readObject();
             System.out.println("Mã đề lấy từ server:\t" + made.maDe);
@@ -56,7 +56,9 @@ public class frmHome extends javax.swing.JFrame {
         }
 
 //        }
-        new frmExercise().setVisible(true);
+        new frmExercise1(sk, made).setVisible(true);
+        this.dispose();
+        
     }
 
     /**

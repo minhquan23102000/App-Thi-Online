@@ -132,7 +132,7 @@ public class Server {
                         dout.flush();
                     } else if (arr[0].equalsIgnoreCase("layDeThi")) {
                         String made = arr[1].trim();
-                            
+                        
                         db = new DbRequester();
                         dethi = db.getDeThi(made);
                         System.out.println(dethi.tenDe);
@@ -141,6 +141,24 @@ public class Server {
                     }
 
                 }
+            while(true){
+            //=====================================================
+                int diem = 0;
+                BaiThi bt = (BaiThi) din.readObject();
+                System.out.print(bt.maBaiThi);
+//for (int i = 0; i < dethi.dsCauHoi.size(); i++)
+//    if (bt.dsCauLam.get(i).cauHoi.maCauHoi == dethi.dsCauHoi.get(i).maCauHoi && bt.dsCauLam.get(i).cauChon == dethi.dsCauHoi.get(i).cauDung)
+//    {
+//        diem ++;        
+//    }
+                bt.ketQua = bt.tinhDiem();
+                System.out.print(bt.ketQua);
+                db.luuBaiLam(bt);
+//                dout.writeObject(bt);
+                
+//=====================================================
+                db.closeConn();
+                break;    }
 /*
                 if (null != arr && arr.length == 3) {
                     if (arr[0].equalsIgnoreCase("layDeThi")) {
@@ -164,6 +182,8 @@ public class Server {
 //            }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
                     if (dout != null) {
