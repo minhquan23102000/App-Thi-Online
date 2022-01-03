@@ -19,7 +19,9 @@ import javax.swing.JOptionPane;
  * @author ADMIN
  */
 public class frmLogin extends javax.swing.JFrame {
-public Socket sk;
+
+    public Socket sk;
+
     /**
      * Creates new form frmLogin
      */
@@ -28,37 +30,41 @@ public Socket sk;
         this.sk = sk;
     }
 
-    private frmLogin() {       
+    public frmLogin() {
+//    initComponents();
     }
 
-    private void login() throws Exception {
-        try{
+    public void login() throws Exception {
+        String chen = "login";
+        String result = "";
+        try {
             ObjectOutputStream gui_server = new ObjectOutputStream(sk.getOutputStream());// tao luon gui di
             ObjectInputStream nhan_server = new ObjectInputStream(sk.getInputStream());// tao luon nhan vao
             String username = txtUsername.getText();
             String password = txtPassword.getText();
-            System.out.println(""+username + password);
-            gui_server.writeUTF(username + "#" + password);// gui du lieu len server
+            System.out.println(username + password);
+            gui_server.writeUTF(username + "#" + password + "#" + chen);// gui du lieu len server
             gui_server.flush();
-            String result = nhan_server.readUTF();
-            result = result.trim();
-            System.out.println("ket qua tu server:" + result);
-            if (result.equals("1")) {
-                 new frmHome(sk).setVisible(true);
-                txtPassword.setText("");
-                txtUsername.setText("");
+//            while (nhan_server.available() != 0) {
+            result = nhan_server.readUTF();
+//            result = result.trim();
+//                System.out.println("Kết quả trả về từ server: " + result);
+
+            if (result.equalsIgnoreCase("1")) {
+                //new frmHome(sk).setVisible(true);
+                new frmHome().setVisible(true);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Tên đăng nhâp hoặc Pass không đúng", "Đăng nhập Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-            //JOptionPane.showMessageDialog(null, "cập nhật dữ liệu thành công");
-        }catch(Exception e){
+//            }
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
             e.printStackTrace();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -151,7 +157,7 @@ public Socket sk;
 
         txtUsername.setBackground(new java.awt.Color(204, 255, 204));
         txtUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtUsername.setText("TADA");
+        txtUsername.setText("yup");
         txtUsername.setBorder(null);
 
         txtPassword.setBackground(new java.awt.Color(204, 255, 204));
@@ -327,18 +333,18 @@ public Socket sk;
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel5AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel5AncestorAdded
-        
+
     }//GEN-LAST:event_jLabel5AncestorAdded
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TADA code nút ĐĂNG NHẬP
-                if (txtUsername.getText().equals("")) {
+        if (txtUsername.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập tên đăng nhập!");
         } else if (txtPassword.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập mật khẩu!");
         } else {
             try {
-                System.out.println("Test");
+//                System.out.println("Test");
                 login();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);

@@ -5,10 +5,10 @@
  */
 package com.hutech.appthitracnghiemonline.client.da;
 
+import com.hutech.appthitracnghiemonline.server.model.DeThi;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import static java.lang.System.in;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,10 +20,12 @@ import javax.swing.JOptionPane;
  */
 public class frmHome extends javax.swing.JFrame {
 
-    public static Socket sk = null;
+//    public static Socket sk = null;
+    public Socket sk;
 
     /**
      * Creates new form frmHome
+     *
      */
     public frmHome(Socket sk) {
         initComponents();
@@ -31,24 +33,32 @@ public class frmHome extends javax.swing.JFrame {
     }
 
     public frmHome() {
-    initComponents();
+        initComponents();
     }
 
     private void ChooseSub() throws IOException {
-//        ObjectOutputStream gui = new ObjectOutputStream(sk.getOutputStream());// tao luon gui di
-//        ObjectInputStream nhan= new ObjectInputStream(sk.getInputStream());
-        sk = new Socket("localhost", 8888);              
+        sk = new Socket("localhost", 8888);
+        String chen = "layDeThi";
         ObjectOutputStream gui = new ObjectOutputStream(sk.getOutputStream());
         ObjectInputStream nhan = new ObjectInputStream(sk.getInputStream());
-        String sub = cbxSubject.getSelectedItem().toString();
-        System.out.println(""+sub);
-        
-        gui.writeUTF("thanh cong");
-        while (nhan.available() > 0) {
-        String made = nhan.readUTF();
-        System.out.println("Mã đề lấy từ server:\t" + made);}
-        new frmExercise().setVisible(true);   
-}
+        String sub = cbxSubject.getSelectedItem().toString().trim();
+        System.out.println("" + sub);
+        gui.writeUTF(chen + "#" + sub);
+        gui.flush();
+//        while (nhan.available() > 0) {
+        System.out.println("" + nhan.available());
+        DeThi made;
+        try {
+            made = (DeThi) nhan.readObject();
+            System.out.println("Mã đề lấy từ server:\t" + made.maDe);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(frmHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//        }
+        new frmExercise().setVisible(true);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

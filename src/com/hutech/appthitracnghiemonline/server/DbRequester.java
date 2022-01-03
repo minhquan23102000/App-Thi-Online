@@ -60,7 +60,7 @@ public class DbRequester {
         DeThi dethi = new DeThi();
         try {
             stmt = con.createStatement();
-            String query = "SELECT * FROM DeThi WHERE maDe = ?";
+            String query = "SELECT * FROM DeThi WHERE [maDe] = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, maDe);
             ResultSet rs = preparedStatement.executeQuery();
@@ -87,13 +87,16 @@ public class DbRequester {
                 }
 
             }
+            
+            System.out.println("test");
             stmt.close();
-
+            return dethi;
         } catch (SQLException ex) {
             Logger.getLogger(DbRequester.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return dethi;
+        return null;
+        //return dethi;
     }
 
     /**
