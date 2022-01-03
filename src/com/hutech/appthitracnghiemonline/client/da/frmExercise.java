@@ -23,7 +23,26 @@ public class frmExercise extends javax.swing.JFrame {
      * Creates new form frmExercise
      */
     public frmExercise() {
+        Timer timer = new Timer(); //new timer
+        counter = 30; //setting the counter to 10 sec
+        TimerTask task = new TimerTask() {
+            public void run() {
+                timeLeft.setText(Integer.toString(counter)); //the timer lable to counter.
+                counter--;
+                if (counter == -1) {
+                    
+                    timer.cancel();
+                     new frmExercise().setVisible(true);
+            
+                } else if (isIt) {
+                    timer.cancel();
+                    isIt = false;
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(task, 1000, 1000); // =  timer.scheduleAtFixedRate(task, delay, period);
         initComponents();
+         this.setLocationRelativeTo(null);
     }
 
     /**
@@ -231,23 +250,7 @@ public class frmExercise extends javax.swing.JFrame {
     private void jLabel8AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel8AncestorAdded
         // TODO add your handling code here:
         
-                Timer timer = new Timer(); //new timer
-        counter = 30; //setting the counter to 10 sec
-        TimerTask task = new TimerTask() {
-            public void run() {
-                timeLeft.setText(Integer.toString(counter)); //the timer lable to counter.
-                counter--;
-                if (counter == -1) {
-                    
-                    timer.cancel();
-            
-                } else if (isIt) {
-                    timer.cancel();
-                    isIt = false;
-                }
-            }
-        };
-        timer.scheduleAtFixedRate(task, 1000, 1000); // =  timer.scheduleAtFixedRate(task, delay, period);
+
     }//GEN-LAST:event_jLabel8AncestorAdded
 
     /**

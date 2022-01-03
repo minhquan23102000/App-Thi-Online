@@ -99,6 +99,40 @@ public class DbRequester {
         //return dethi;
     }
 
+    public int ktTonTaiTrongBD(String ma) {
+        con = DbConnector.getConnection();
+        String sql = "SELECT * FROM SINHVIEN WHERE MASSV='" + ma + "'";
+        int tonTai = 0;
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                tonTai = 1;
+            }
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tonTai;
+    }
+    //
+
+    public boolean insertsv(SinhVien sinhvien) throws Exception {
+        con = DbConnector.getConnection();
+        String sql = "insert into sinhvien(ho, ten, sdt, mssv) values(?,?,?,?)";
+        try (
+                PreparedStatement ps = con.prepareStatement(sql);) {
+            ps.setString(1, sinhvien.ho);
+            ps.setString(2, sinhvien.ten);
+            ps.setString(3, sinhvien.sdt);
+            ps.setString(4, sinhvien.mssv);
+
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     /**
      * Hàm lấy danh sách mã đề thi trong db;
      *
@@ -158,6 +192,7 @@ public class DbRequester {
             Logger.getLogger(DbRequester.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+<<<<<<< Updated upstream
     
     public String Login(String UserName, String Password) throws SQLException, ClassNotFoundException, Exception {
         stmt = con.createStatement();
@@ -182,6 +217,9 @@ public class DbRequester {
         return null;
     }
     
+=======
+
+>>>>>>> Stashed changes
     public void closeConn() {
         try {
             con.close();

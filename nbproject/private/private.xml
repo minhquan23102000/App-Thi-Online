@@ -5,11 +5,9 @@
         <group>
             <file>file:/C:/Users/TADA/Documents/GitHub/App-Thi-Online/src/com/hutech/appthitracnghiemonline/client/da/frmHome.java</file>
             <file>file:/C:/Users/TADA/Documents/GitHub/App-Thi-Online/src/com/hutech/appthitracnghiemonline/client/da/frmLogin.java</file>
+            <file>file:/C:/Users/TADA/Documents/GitHub/App-Thi-Online/src/com/hutech/appthitracnghiemonline/client/Client.java</file>
             <file>file:/C:/Users/TADA/Documents/GitHub/App-Thi-Online/src/com/hutech/appthitracnghiemonline/server/DbRequester.java</file>
-            <file>file:/C:/Users/TADA/Documents/GitHub/App-Thi-Online/src/com/hutech/appthitracnghiemonline/server/DbConnector.java</file>
             <file>file:/C:/Users/TADA/Documents/GitHub/App-Thi-Online/src/com/hutech/appthitracnghiemonline/server/Server.java</file>
-            <file>file:/C:/Users/TADA/Documents/GitHub/App-Thi-Online/src/com/hutech/appthitracnghiemonline/client/da/frmPort.java</file>
-            <file>file:/C:/Users/TADA/Documents/GitHub/App-Thi-Online/src/com/hutech/appthitracnghiemonline/client/da/frmResult.java</file>
             <file>file:/C:/Users/TADA/Documents/GitHub/App-Thi-Online/src/com/hutech/appthitracnghiemonline/server/ServerThread.java</file>
         </group>
     </open-files>

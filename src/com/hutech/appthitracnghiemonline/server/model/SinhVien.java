@@ -4,11 +4,13 @@
  */
 package com.hutech.appthitracnghiemonline.server.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author PC
  */
-public class SinhVien {
+public class SinhVien implements Serializable{
     public String mssv;
     public String sdt;
     public String password;
@@ -24,6 +26,46 @@ public class SinhVien {
     }
 
     public SinhVien() {
+    }
+
+    public String getMssv() {
+        return mssv;
+    }
+
+    public void setMssv(String mssv) {
+        this.mssv = mssv;
+    }
+
+    public String getSdt() {
+        return sdt;
+    }
+
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getHo() {
+        return ho;
+    }
+
+    public void setHo(String ho) {
+        this.ho = ho;
+    }
+
+    public String getTen() {
+        return ten;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
     }
     
     
