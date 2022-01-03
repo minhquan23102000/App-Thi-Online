@@ -23,6 +23,12 @@ public class Server {
     public static Scanner sc = new Scanner(System.in);
     static final int port = 8888;
 
+    //Menu cac chuc nang
+    public static final int LOGIN = 0;
+    public static final int XACNHANSINHVIEN = 1;
+    public static final int LAYDETHI = 2;
+    public static final int GUIDETHI = 3;
+
     /**
      * @param args the command line arguments
      */
@@ -58,13 +64,14 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (serverSocket != null) {
-                try {
-                    serverSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //Dong ket noi
+//            if (serverSocket != null) {
+//                try {
+//                    serverSocket.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
         }
 
         /*
@@ -83,109 +90,79 @@ public class Server {
         private String name;
         DbRequester db = null;
         DeThi dethi = null;
-
-        String[] arr = {null};
-        String str = "";
+        ObjectOutputStream dout = null;
+        ObjectInputStream din = null;
 
         // Constructor
-        public ClientHandler(Socket socket) {
+        public ClientHandler(Socket socket) throws IOException {
             this.clientSocket = socket;
+            //Tạo input stream, nối tới Socket
+            din = new ObjectInputStream(clientSocket.getInputStream());
+            //Tạo outputStream, nối tới socket
+            dout = new ObjectOutputStream(clientSocket.getOutputStream());
+            System.out.println("Server đã được kết nối!!!");
         }
 
         public void run() {
-            ObjectOutputStream dout = null;
-            ObjectInputStream din = null;
 
             try {
-                //Tạo input stream, nối tới Socket
-                din = new ObjectInputStream(clientSocket.getInputStream());
-                //Tạo outputStream, nối tới socket
-                dout = new ObjectOutputStream(clientSocket.getOutputStream());
-                //System.out.println("" + in.available());
-
-                //Đọc thông tin từ socket
-                System.out.println("Server đã được kết nối!!!");
-
-                str = din.readUTF();
-                System.out.println(str);// In chuỗi gửi từ Client
-//            while (din.available() > 0) {
-//            System.out.println("Client gửi: " + str);
-                arr = str.split("#");// Cắt được 3 chuỗi arr[1] = USERNAME, arr[2] = PASSWORD, arr[3] = CHUỖI SO SÁNH VÀO CHỨC NĂNG
-                String result = "";
-
-                if (null != arr && arr.length == 3) {
-                    if (arr[2].equalsIgnoreCase("login")) {
-                        try {
+                while (true) {
+                    int choice = din.readInt();
+                    switch (choice) {
+                        case LOGIN:
+                            String str = din.readUTF().trim();
+                            String[] arr = str.split("#");
                             db = new DbRequester(arr[0], arr[1]);
-                            System.out.println("ĐÃ KẾT NỐI");
-                        } catch (Exception e) {
-                            result = "DBError";
-                            System.out.println("Loi ket noi database: " + e);
-                        }
-//                        if ((null == db) && !result.equals("DBError")) {
-//                            result = "OK";
-//                        } else if ((null != db) && !result.equals("DBError")) {
-//                            result = db.toString();
-//                        }
+                            if (db.isConnected()) {
+                                dout.writeUTF("1");
+                            } else {
+                                dout.writeUTF("0");
+                            }
+                            dout.flush();
+                            break;
 
-                        dout.writeUTF("1"); // Gửi kết quả về cho Client
-                        dout.flush();
-                    } else if (arr[0].equalsIgnoreCase("layDeThi")) {
-                        String made = arr[1].trim();
-                        
-                        db = new DbRequester();
-                        dethi = db.getDeThi(made);
-                        System.out.println(dethi.tenDe);
-                        dout.writeObject(dethi);
-                        dout.flush();
-                    }
+                        case XACNHANSINHVIEN:
+                            SinhVien sv = new SinhVien();
+                            sv = (SinhVien) din.readObject();
+                            int n = db.ktTonTaiTrongBD(sv.mssv);
+     
+                            dout.writeInt(n);
+                            dout.flush();
+                            //-------------------            
+                            break;
 
-                }
-            while(true){
-            //=====================================================
-                int diem = 0;
-                BaiThi bt = (BaiThi) din.readObject();
-                System.out.print(bt.maBaiThi);
-//for (int i = 0; i < dethi.dsCauHoi.size(); i++)
-//    if (bt.dsCauLam.get(i).cauHoi.maCauHoi == dethi.dsCauHoi.get(i).maCauHoi && bt.dsCauLam.get(i).cauChon == dethi.dsCauHoi.get(i).cauDung)
-//    {
-//        diem ++;        
-//    }
-                bt.ketQua = bt.tinhDiem();
-                System.out.print(bt.ketQua);
-                db.luuBaiLam(bt);
-//                dout.writeObject(bt);
-                
-//=====================================================
-                db.closeConn();
-                break;    }
-/*
-                if (null != arr && arr.length == 3) {
-                    if (arr[0].equalsIgnoreCase("layDeThi")) {
-                        dethi = db.getDeThi(arr[1]);
-                        System.out.println(dethi.tenDe);
-                        dout.writeObject(dethi);
-                        dout.flush();
+                        case LAYDETHI:
+                            String made = din.readUTF().trim();
+
+                            dethi = db.getDeThi(made);
+                            System.out.println(dethi.tenDe);
+                            dout.writeObject(dethi);
+                            dout.flush();
+                            break;
+
+                        case GUIDETHI:
+                            BaiThi bt = (BaiThi) din.readObject();
+                            System.out.print(bt.maBaiThi);
+                            bt.ketQua = bt.tinhDiem();
+                            System.out.print(bt.ketQua);
+                            db.luuBaiLam(bt);
+                            System.out.println("Luu bai thi thanh cong cho sinh vien: " +bt.mssv);
+                            break;
+
                     }
                 }
-*/
-//            System.out.println(db.getListMaDe().toString());
-//            System.out.println(dethi.toString());
-//                BaiThi baiThi = new BaiThi("1443", dethi.maDe);
-//                for (CauHoi c : dethi.dsCauHoi) {
-//                    CauLam cauLam = new CauLam(c, 1);
-//                    baiThi.dsCauLam.add(cauLam);
-//                }
-//                    dout.writeObject(dethi);
-//                db.luuBaiLam(baiThi);
-//                }
-//            }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
+                    if (db.isConnected()) {
+                        db.closeConn();
+                    }
+                        
                     if (dout != null) {
                         dout.close();
                     }
@@ -197,7 +174,7 @@ public class Server {
                     e.printStackTrace();
                 }
             }
+
         }
     }
-
 }

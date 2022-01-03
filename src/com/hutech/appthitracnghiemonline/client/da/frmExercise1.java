@@ -11,6 +11,7 @@ import static com.hutech.appthitracnghiemonline.client.Client.port;
 import static com.hutech.appthitracnghiemonline.client.da.frmExercise1.din;
 import static com.hutech.appthitracnghiemonline.client.da.frmExercise1.dout;
 import static com.hutech.appthitracnghiemonline.client.da.frmExercise1.test;
+import com.hutech.appthitracnghiemonline.server.Server;
 import com.hutech.appthitracnghiemonline.server.model.BaiThi;
 import com.hutech.appthitracnghiemonline.server.model.CauLam;
 import com.hutech.appthitracnghiemonline.server.model.DeThi;
@@ -43,8 +44,8 @@ public class frmExercise1 extends javax.swing.JFrame {
     public static Socket client = null;
     public static int port = 8888;
     public static Scanner sc = new Scanner(System.in);
-    public static DeThi test = null;   
-    public static BaiThi bt =null; 
+    public static DeThi test = null;
+    public static BaiThi bt = null;
     public static ObjectOutputStream dout = null;
     public static ObjectInputStream din = null;
     public static int ctl = 0;
@@ -53,8 +54,9 @@ public class frmExercise1 extends javax.swing.JFrame {
     public static int dapan = 0;
     public static int STOP = 1;
     public Timer timer = null;
+
     /**
-     * 
+     *
      * Creates new form frmExercise
      */
 //    public frmExercise(Socket sk) {
@@ -68,9 +70,7 @@ public class frmExercise1 extends javax.swing.JFrame {
 ////        rdo_caud.setText(test.dsCauHoi.get(0).cauD);
 //        
 //    }
-    
-    public frmExercise1(Socket client, DeThi test)
-    {
+    public frmExercise1(Socket client, DeThi test) {
         frmExercise1.test = test;
         frmExercise1.client = client;
         this.setLocationRelativeTo(null);
@@ -79,8 +79,17 @@ public class frmExercise1 extends javax.swing.JFrame {
         tinhGio();
     }
 
-    
-    
+    public frmExercise1(ObjectOutputStream gui, ObjectInputStream nhan, DeThi test) {
+
+        dout = gui;
+        din = nhan;
+        frmExercise1.test = test;
+        this.setLocationRelativeTo(null);
+        initComponents();
+        hienCauHoi(test);
+        tinhGio();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -299,7 +308,7 @@ public class frmExercise1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel4AncestorAdded
-       
+
     }//GEN-LAST:event_jLabel4AncestorAdded
 
     private void caucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caucActionPerformed
@@ -308,32 +317,30 @@ public class frmExercise1 extends javax.swing.JFrame {
 
     private void btn_tiepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tiepActionPerformed
         ++i;
-         if (i == 10)
-        {
+        if (i == 10) {
             timer.cancel();
+            try {
+                tinh_diem(bt);
+            } catch (IOException ex) {
+                Logger.getLogger(frmExercise1.class.getName()).log(Level.SEVERE, null, ex);
+            }
             new frmResult().setVisible(true);
             this.setVisible(false);
             this.dispose();
             STOP = 0;
-            frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            
+
+        } else {
+            timer.cancel();
+            hienCauHoi(test);
+            tinhGio();
         }
-         else{
-        timer.cancel();
-        hienCauHoi(test);  
-        tinhGio();
-         }
     }//GEN-LAST:event_btn_tiepActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) throws IOException, ClassNotFoundException {
-        client = new Socket("localhost", port);              
-        dout = new ObjectOutputStream(client.getOutputStream());
-        din = new ObjectInputStream(client.getInputStream());
-        
-        
+
         System.out.println("Nội dung bài thi: 10 câu trắc nghiệm - mỗi câu 30 giây làm bài");
 //        test = (DeThi)din.readObject();
 //        System.out.println(test.dsCauHoi.toString());
@@ -395,134 +402,123 @@ public class frmExercise1 extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            
+
             public void run() {
-               
+
                 frm = new frmExercise1(client, test);
-               frm.setVisible(true);
+                frm.setVisible(true);
             }
         });
     }
 //hàm tính giờ
-    public void tinhGio()
-    {
-        try{
-                   
-        timer = new Timer(); //new timer
-         if (i == 10)
-             timer.cancel();
-         else{
-        counter = 7; //setting the counter to 30 sec
-        TimerTask task;
-            task = new TimerTask() {
-                public void run() {
-                    timeLeft.setText(Integer.toString(counter));
-                    counter--;
-                    System.out.println(counter);
-                    if (counter == 0 && i >= test.dsCauHoi.size()-1)
-                    {
-                        JOptionPane.showMessageDialog(null,            
-                                "Chúc mừng bạn đã HOÀN THÀNH bài kiểm tra. Hệ thống đang xử lý kết quả kiểm tra!", "HOÀN THÀNH", JOptionPane.INFORMATION_MESSAGE);
-                        new frmResult().setVisible(true);
-                        //frm.setVisible(false);
-//                        frm.dispose();
-//                          frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                        STOP = 0;
-//                        if (i > test.dsCauHoi.size())
-{
-                        timer.cancel();
-                        try {
-                            System.out.println("run");
-                            
-                            tinh_diem(bt);
-                            
-                        } catch (IOException ex) {
-                            Logger.getLogger(frmExercise1.class.getName()).log(Level.SEVERE, null, ex);
+
+    public void tinhGio() {
+        try {
+
+            timer = new Timer(); //new timer
+            if (i == 10) {
+                timer.cancel();
+            } else {
+                counter = 7; //setting the counter to 30 sec
+                TimerTask task;
+                task = new TimerTask() {
+                    public void run() {
+                        timeLeft.setText(Integer.toString(counter));
+                        counter--;
+                        System.out.println(counter);
+                        if (counter <= 0 && i >= test.dsCauHoi.size() - 1) {
+                            JOptionPane.showMessageDialog(null,
+                                    "Chúc mừng bạn đã HOÀN THÀNH bài kiểm tra. Hệ thống đang xử lý kết quả kiểm tra!", "HOÀN THÀNH", JOptionPane.INFORMATION_MESSAGE);
+                            new frmResult().setVisible(true);
+
+                            STOP = 0;
+
+                            timer.cancel();
+                            try {
+                                System.out.println("Bat dau gui bai thi len server");
+                                tinh_diem(bt);
+
+                            } catch (IOException ex) {
+                                Logger.getLogger(frmExercise1.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            timer.cancel();
+
+                            System.exit(0);
+
+                        } else if (counter == 5 && dapan == 0) {
+//                            JOptionPane.showMessageDialog(null,
+//                                    "Chú ý gần hết thời gian. Vui lòng hoàn thành đáp án!", "Chú ý", JOptionPane.ERROR_MESSAGE);
+                        } else if (counter == -1 && i != 10) {
+                            timer.cancel();
+                            ++i;
+                            hienCauHoi(test);
+                            tinhGio();
+
+                        } else if (isIt) {
+                            timer.cancel();
+                            isIt = false;
                         }
-                        timer.cancel();
-                       
-                        System.exit(0);
-                    }
 
                     }
-                    else if (counter == 5 && dapan == 0)
-                    {
-                        JOptionPane.showMessageDialog(null,
-                                "Chú ý gần hết thời gian. Vui lòng hoàn thành đáp án!", "Chú ý", JOptionPane.ERROR_MESSAGE);
-                    }
-                    else if (counter == -1&&i!=10) {
-                        timer.cancel();
-                        ++i;
-                        hienCauHoi(test);
-                        tinhGio();
-                        
-                    } else if (isIt) {
-                        timer.cancel();
-                        isIt = false;
-                    }
-                    
-                }
-            };
-        timer.scheduleAtFixedRate(task, 1000, 1000); // =  timer.scheduleAtFixedRate(task, delay, period);
-         }
-        }catch(Exception e){}
+                };
+                timer.scheduleAtFixedRate(task, 1000, 1000); // =  timer.scheduleAtFixedRate(task, delay, period);
+            }
+        } catch (Exception e) {
+        }
     }
+
     //hiện câu hoi
-    public static void hienCauHoi(DeThi test)
-    {
-        try{
-            System.out.println("XIN CHÀO");
-            
+    public static void hienCauHoi(DeThi test) {
+        try {
+       
 //                caua.setSelected(false);
 //                caub.setSelected(false);
 //                cauc.setSelected(false);
 //                caud.setSelected(false);
 //                
-                label_stt.setText("CÂU " + (i+1));
-                label_cauhoi.setText(test.dsCauHoi.get(i).noiDung);
-                caua.setText(test.dsCauHoi.get(i).cauA);
-                caub.setText(test.dsCauHoi.get(i).cauB);
-                cauc.setText(test.dsCauHoi.get(i).cauC);
-                caud.setText(test.dsCauHoi.get(i).cauD);
+            label_stt.setText("CÂU " + (i + 1));
+            label_cauhoi.setText(test.dsCauHoi.get(i).noiDung);
+            caua.setText(test.dsCauHoi.get(i).cauA);
+            caub.setText(test.dsCauHoi.get(i).cauB);
+            cauc.setText(test.dsCauHoi.get(i).cauC);
+            caud.setText(test.dsCauHoi.get(i).cauD);
             //lưu các câu làm vào trong list CauLam
             dapan = 0;
-            if (caua.isSelected())
+            if (caua.isSelected()) {
                 dapan = 1;
-            else if (caub.isSelected())
+            } else if (caub.isSelected()) {
                 dapan = 2;
-            else if (cauc.isSelected())
+            } else if (cauc.isSelected()) {
                 dapan = 3;
-            else if (caud.isSelected())
+            } else if (caud.isSelected()) {
                 dapan = 4;
-            else
+            } else {
                 dapan = 0; //rang buoc dap an
-            System.out.println("GIA TRI " + dapan);
+            }
             CauLam cl = new CauLam(test.dsCauHoi.get(i), dapan);
             arrList.add(cl);
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
     }
+
     //gửi kết quả về server
-    public static void tinh_diem(BaiThi bt) throws IOException{
-      
+    public static void tinh_diem(BaiThi bt) throws IOException {
+
         //lưu bài thi để gưi về server
 //        System.out.println("123");
 //        System.out.println( arrList.get(1).cauChon + " CAU TRA LOI");
-
         //lưu danh sách các câu làm
-        bt = new BaiThi("2", test.maDe);
+        bt = new BaiThi("1443", test.maDe);
         bt.dsCauLam = arrList;
-        System.out.println(bt.mssv + "456789");
-        
-        
-        while(true){
-            try{
-            dout.writeObject(bt);         
-             }catch(Exception ex){}
-        } 
-       
+        System.out.println("Bat dau gui bai thi len server");
+        dout.writeInt(Server.GUIDETHI);
+        dout.flush();
+        dout.writeObject(bt);
+        dout.flush();
+
     }
-        
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_tiep;
     private javax.swing.ButtonGroup buttonGroup1;

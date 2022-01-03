@@ -40,14 +40,17 @@ public class DbRequester {
         }
 
     }
-    
+
+    public boolean isConnected() {
+        return con != null;
+    }
+
     public DbRequester(String username, String password) {
         try {
             DbConnector connector = new DbConnector();
             con = connector.getConnection(username, password);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
@@ -87,7 +90,7 @@ public class DbRequester {
                 }
 
             }
-            
+
             System.out.println("test");
             stmt.close();
             return dethi;
@@ -100,18 +103,18 @@ public class DbRequester {
     }
 
     public int ktTonTaiTrongBD(String ma) {
-        con = DbConnector.getConnection();
-        String sql = "SELECT * FROM SINHVIEN WHERE MASSV='" + ma + "'";
+        ma = ma.trim();
+        String sql = "SELECT * FROM SINHVIEN WHERE mssv=?";
         int tonTai = 0;
         try {
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, ma);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 tonTai = 1;
             }
             rs.close();
             ps.close();
-            con.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -120,17 +123,16 @@ public class DbRequester {
     //
 
     public boolean insertsv(SinhVien sinhvien) throws Exception {
-        con = DbConnector.getConnection();
         String sql = "insert into sinhvien(ho, ten, sdt, mssv) values(?,?,?,?)";
-        try (
-                PreparedStatement ps = con.prepareStatement(sql);) {
-            ps.setString(1, sinhvien.ho);
-            ps.setString(2, sinhvien.ten);
-            ps.setString(3, sinhvien.sdt);
-            ps.setString(4, sinhvien.mssv);
 
-            return ps.executeUpdate() > 0;
-        }
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, sinhvien.ho);
+        ps.setString(2, sinhvien.ten);
+        ps.setString(3, sinhvien.sdt);
+        ps.setString(4, sinhvien.mssv);
+
+        return ps.executeUpdate() > 0;
+
     }
 
     /**
@@ -193,7 +195,6 @@ public class DbRequester {
         }
     }
 
-    
     public String Login(String UserName, String Password) throws SQLException, ClassNotFoundException, Exception {
         stmt = con.createStatement();
         String query = "SELECT mssv, password FROM SinhVien where [mssv] =? and [password] =?";

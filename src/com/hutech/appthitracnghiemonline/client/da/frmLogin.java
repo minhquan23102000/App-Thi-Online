@@ -5,13 +5,17 @@
  */
 package com.hutech.appthitracnghiemonline.client.da;
 
+import com.hutech.appthitracnghiemonline.server.Server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,38 +25,46 @@ import javax.swing.JOptionPane;
 public class frmLogin extends javax.swing.JFrame {
 
     public Socket sk;
+    private int ClientHandler;
+    ObjectOutputStream gui_server;
+    ObjectInputStream nhan_server;
 
     /**
      * Creates new form frmLogin
+     * @param in
+     * @param out
      */
-    public frmLogin(Socket sk) {
+    public frmLogin(ObjectInputStream in, ObjectOutputStream out) {
+        
+        gui_server = out;// tao luon gui di
+        nhan_server = in;// tao luon nhan vao
         initComponents();
-        this.sk = sk;
     }
 
     public frmLogin() {
-//    initComponents();
+        initComponents();
     }
 
+    
+
     public void login() throws Exception {
-        String chen = "login";
         String result = "";
         try {
-            ObjectOutputStream gui_server = new ObjectOutputStream(sk.getOutputStream());// tao luon gui di
-            ObjectInputStream nhan_server = new ObjectInputStream(sk.getInputStream());// tao luon nhan vao
+
             String username = txtUsername.getText();
             String password = txtPassword.getText();
             System.out.println(username + password);
-            gui_server.writeUTF(username + "#" + password + "#" + chen);// gui du lieu len server
+            gui_server.writeInt(Server.LOGIN);
+            gui_server.writeUTF(username + "#" + password);// gui du lieu len server
             gui_server.flush();
 //            while (nhan_server.available() != 0) {
-            result = nhan_server.readUTF();
+            result = nhan_server.readUTF().trim();
 //            result = result.trim();
 //                System.out.println("Kết quả trả về từ server: " + result);
 
-            if (result.equalsIgnoreCase("1")) {
+            if (result.equals("1")) {
                 //new frmHome(sk).setVisible(true);
-                new frmHome().setVisible(true);
+                new frmInfo(nhan_server, gui_server).setVisible(true);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null,
