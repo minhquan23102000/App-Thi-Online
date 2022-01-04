@@ -5,17 +5,49 @@
  */
 package com.hutech.appthitracnghiemonline.client.da;
 
+import com.hutech.appthitracnghiemonline.client.Client;
+import static com.hutech.appthitracnghiemonline.client.da.frmExercise1.client;
+import static com.hutech.appthitracnghiemonline.client.da.frmExercise1.port;
+import static com.hutech.appthitracnghiemonline.client.da.frmExercise1.test;
+import com.hutech.appthitracnghiemonline.server.model.BaiThi;
+import com.hutech.appthitracnghiemonline.server.model.CauLam;
+import com.hutech.appthitracnghiemonline.server.model.DeThi;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  *
  * @author ADMIN
  */
 public class frmResult extends javax.swing.JFrame {
-
+    public static int i = 0;
+    public static int guiKetQua = 1;
+    int counter = 30;
+    Boolean isIt = false;
+    public static Client c = new Client();
+    public static Socket client = null;
+    public static int port = 8888;
+    public static Scanner sc = new Scanner(System.in);
+    public static BaiThi bt = null;                
+    public static ObjectOutputStream dout = null;
+    public static ObjectInputStream din = null;
+    public static int ctl = 0;
+    public static frmExercise1 frm = null;
+    public static ArrayList<CauLam> arrList = new ArrayList<CauLam>(10);
+    public static int dapan = 0;
+    public static int STOP = 1;
     /**
      * Creates new form frmResult
      */
-    public frmResult() {
+    public frmResult(BaiThi bt) {
+        this.setLocationRelativeTo(null);
         initComponents();
+        this.bt = bt;
+        hienKq(this.bt);
     }
 
     /**
@@ -34,20 +66,19 @@ public class frmResult extends javax.swing.JFrame {
         txt_mssv = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
-        txt_hoten = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        txt_sdt = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        txt_diem = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        txt_cauDung = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(820, 529));
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 0));
 
@@ -70,16 +101,16 @@ public class frmResult extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("TÊN:");
 
-        txt_hoten.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        txt_hoten.setForeground(new java.awt.Color(255, 255, 255));
-        txt_hoten.setText("NGUYỄN VĂN HÀ");
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("NGUYỄN VĂN HÀ");
 
         jSeparator2.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator2.setForeground(new java.awt.Color(255, 255, 255));
 
-        txt_sdt.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        txt_sdt.setForeground(new java.awt.Color(255, 255, 255));
-        txt_sdt.setText("093622838");
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("093622838");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -98,12 +129,12 @@ public class frmResult extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_sdt))
+                        .addComponent(jLabel6))
                     .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_hoten))
+                        .addComponent(jLabel5))
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jSeparator1)
@@ -130,13 +161,13 @@ public class frmResult extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txt_hoten))
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(69, 69, 69)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txt_sdt))
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(115, 115, 115))
@@ -145,14 +176,14 @@ public class frmResult extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel8.setText("ĐIỂM CỦA BẠN ĐẠT ĐƯỢC");
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel9.setText("10");
+        txt_diem.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        txt_diem.setText("10");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel10.setText("SỐ CÂU ĐÚNG");
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel11.setText("10");
+        txt_cauDung.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        txt_cauDung.setText("10");
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_Close_40px.png"))); // NOI18N
 
@@ -167,13 +198,13 @@ public class frmResult extends javax.swing.JFrame {
                         .addComponent(jLabel8)
                         .addGap(136, 136, 136))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
+                        .addComponent(txt_diem)
                         .addGap(233, 233, 233))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(196, 196, 196))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
+                        .addComponent(txt_cauDung)
                         .addGap(231, 231, 231))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel12)
@@ -185,11 +216,11 @@ public class frmResult extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jLabel8)
                 .addGap(31, 31, 31)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_diem, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(88, 88, 88)
                 .addComponent(jLabel10)
                 .addGap(43, 43, 43)
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_cauDung, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65))
@@ -227,7 +258,7 @@ public class frmResult extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException, ClassNotFoundException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -251,33 +282,50 @@ public class frmResult extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        client = new Socket("localhost", port);              
+        dout = new ObjectOutputStream(client.getOutputStream());
+        din = new ObjectInputStream(client.getInputStream());
+        
+        if (din.available() != 0)
+        {
+            bt = (BaiThi)din.readObject();
+            System.out.println(bt.dsCauLam.toString());
+        }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmResult().setVisible(true);
-            }
-        });
+       
+    }
+//hiện câu hoi
+    public void hienKq(BaiThi bt)
+    {
+        try{
+                    
+            
+               txt_mssv.setText(bt.mssv);
+               txt_diem.setText(bt.ketQua + "");
+               txt_cauDung.setText(bt.ketQua + "");
+            
+        }catch(Exception e){}
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JLabel txt_hoten;
-    private javax.swing.JLabel txt_mssv;
-    private javax.swing.JLabel txt_sdt;
+    private javax.swing.JLabel txt_cauDung;
+    public static javax.swing.JLabel txt_diem;
+    public static javax.swing.JLabel txt_mssv;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,6 +7,7 @@ package com.hutech.appthitracnghiemonline.client.da;
 
 import com.hutech.appthitracnghiemonline.client.Client;
 import com.hutech.appthitracnghiemonline.server.DbRequester;
+import com.hutech.appthitracnghiemonline.server.Server;
 import com.hutech.appthitracnghiemonline.server.Test;
 import com.hutech.appthitracnghiemonline.server.model.SinhVien;
 import java.awt.Color;
@@ -15,6 +16,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,10 +27,11 @@ import javax.swing.JOptionPane;
 public class frmInfo extends javax.swing.JFrame {
 
     public static int addsv = 1;
-    public int n;
     public Socket client = null;
     public int port = 8888;
-    public static Scanner sc = new Scanner(System.in);
+    ObjectOutputStream dout;
+    ObjectInputStream din;
+    //  public static Scanner sc = new Scanner(System.in);
 
     /**
      * Creates new form frmInfo
@@ -35,6 +39,13 @@ public class frmInfo extends javax.swing.JFrame {
     public frmInfo() {
         initComponents();
         this.setLocationRelativeTo(null);
+    }
+
+    public frmInfo(ObjectInputStream in, ObjectOutputStream out) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        dout = out;
+        din = in;
     }
 
     /**
@@ -271,29 +282,23 @@ public class frmInfo extends javax.swing.JFrame {
             return;
         }
         try {
-            client = new Socket("localhost", port);
-            ObjectOutputStream dout = new ObjectOutputStream(client.getOutputStream());
-            ObjectInputStream din = new ObjectInputStream(client.getInputStream());
-            dout.writeInt(addsv);
+
+            dout.writeInt(Server.XACNHANSINHVIEN);
             SinhVien sv = new SinhVien();
             sv.setHo(txt_ho.getText());
             sv.setTen(txt_ten.getText());
             sv.setMssv(txt_mssv.getText());
             sv.setSdt(txt_sdt.getText());
             dout.writeObject(sv); // gui doi tuong sv ve server  
-            while (din.available() > 0) {
-                n = din.readInt();
-                System.out.println(n);
-                if (n == 0) {
-
-                    JOptionPane.showMessageDialog(this, "Success...");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Something was wrong!!!...");
-                }
+           
+            int n = din.readInt();
+            if (n == 1) {
+                new frmHome(dout, din, sv.mssv).setVisible(true);
+                this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Ma so sinh vien khong ton tai");
             }
 
-            new frmExercise().setVisible(true);
-            this.setVisible(false);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error:" + e.getMessage());
             e.printStackTrace();

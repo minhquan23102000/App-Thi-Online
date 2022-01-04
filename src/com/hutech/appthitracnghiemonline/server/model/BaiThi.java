@@ -4,12 +4,13 @@
  */
 package com.hutech.appthitracnghiemonline.server.model;
 
+import java.io.Serializable;
 import java.util.*;
 /**
  *
  * @author PC
  */
-public class BaiThi {
+public class BaiThi implements Serializable{
     public int maBaiThi;
     public String mssv;
     public String maDe;

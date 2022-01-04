@@ -18,8 +18,8 @@ public class DbConnector {
         String connectionUrl =
                 "jdbc:sqlserver://localhost:1433;"
                         + "database=BAITHI;"
-                        + "user=VANHA;"
-                        + "password=123456;"
+                        + "user=nhan;"
+                        + "password=1234;"
                         + "loginTimeout=30;";
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
