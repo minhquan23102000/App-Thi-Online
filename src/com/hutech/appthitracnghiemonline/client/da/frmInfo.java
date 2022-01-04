@@ -293,7 +293,7 @@ public class frmInfo extends javax.swing.JFrame {
            
             int n = din.readInt();
             if (n == 1) {
-                new frmHome(dout, din).setVisible(true);
+                new frmHome(dout, din, sv.mssv).setVisible(true);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Ma so sinh vien khong ton tai");

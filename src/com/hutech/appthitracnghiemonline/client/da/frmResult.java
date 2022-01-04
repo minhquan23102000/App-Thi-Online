@@ -43,10 +43,11 @@ public class frmResult extends javax.swing.JFrame {
     /**
      * Creates new form frmResult
      */
-    public frmResult() {
+    public frmResult(BaiThi bt) {
         this.setLocationRelativeTo(null);
         initComponents();
-        hienKq(bt);
+        this.bt = bt;
+        hienKq(this.bt);
     }
 
     /**
@@ -74,7 +75,7 @@ public class frmResult extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txt_diem = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        txt_cauDung = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -181,8 +182,8 @@ public class frmResult extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel10.setText("SỐ CÂU ĐÚNG");
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel11.setText("10");
+        txt_cauDung.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        txt_cauDung.setText("10");
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_Close_40px.png"))); // NOI18N
 
@@ -203,7 +204,7 @@ public class frmResult extends javax.swing.JFrame {
                         .addComponent(jLabel10)
                         .addGap(196, 196, 196))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
+                        .addComponent(txt_cauDung)
                         .addGap(231, 231, 231))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel12)
@@ -219,7 +220,7 @@ public class frmResult extends javax.swing.JFrame {
                 .addGap(88, 88, 88)
                 .addComponent(jLabel10)
                 .addGap(43, 43, 43)
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_cauDung, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65))
@@ -285,8 +286,6 @@ public class frmResult extends javax.swing.JFrame {
         dout = new ObjectOutputStream(client.getOutputStream());
         din = new ObjectInputStream(client.getInputStream());
         
-        
-        System.out.println("kq");
         if (din.available() != 0)
         {
             bt = (BaiThi)din.readObject();
@@ -294,29 +293,24 @@ public class frmResult extends javax.swing.JFrame {
         }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmResult().setVisible(true);
-            }
-        });
+       
     }
 //hiện câu hoi
-    public static void hienKq(BaiThi bt)
+    public void hienKq(BaiThi bt)
     {
         try{
-            System.out.print("XIN CHÀO");
                     
             
                txt_mssv.setText(bt.mssv);
                txt_diem.setText(bt.ketQua + "");
+               txt_cauDung.setText(bt.ketQua + "");
             
         }catch(Exception e){}
     }
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -330,6 +324,7 @@ public class frmResult extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JLabel txt_cauDung;
     public static javax.swing.JLabel txt_diem;
     public static javax.swing.JLabel txt_mssv;
     // End of variables declaration//GEN-END:variables

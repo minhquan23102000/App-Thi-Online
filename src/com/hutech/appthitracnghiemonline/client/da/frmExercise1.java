@@ -54,6 +54,7 @@ public class frmExercise1 extends javax.swing.JFrame {
     public static int dapan = 0;
     public static int STOP = 1;
     public Timer timer = null;
+    public static String mssv;
 
     /**
      *
@@ -79,10 +80,11 @@ public class frmExercise1 extends javax.swing.JFrame {
         tinhGio();
     }
 
-    public frmExercise1(ObjectOutputStream gui, ObjectInputStream nhan, DeThi test) {
+    public frmExercise1(ObjectOutputStream gui, ObjectInputStream nhan, DeThi test, String mssv) {
 
         dout = gui;
         din = nhan;
+        this.mssv = mssv;
         frmExercise1.test = test;
         this.setLocationRelativeTo(null);
         initComponents();
@@ -320,11 +322,11 @@ public class frmExercise1 extends javax.swing.JFrame {
         if (i == 10) {
             timer.cancel();
             try {
-                tinh_diem(bt);
+                tinh_diem();
             } catch (IOException ex) {
                 Logger.getLogger(frmExercise1.class.getName()).log(Level.SEVERE, null, ex);
             }
-            new frmResult().setVisible(true);
+            new frmResult(bt).setVisible(true);
             this.setVisible(false);
             this.dispose();
             STOP = 0;
@@ -419,7 +421,7 @@ public class frmExercise1 extends javax.swing.JFrame {
             if (i == 10) {
                 timer.cancel();
             } else {
-                counter = 7; //setting the counter to 30 sec
+                counter = 30; //setting the counter to 30 sec
                 TimerTask task;
                 task = new TimerTask() {
                     public void run() {
@@ -429,14 +431,15 @@ public class frmExercise1 extends javax.swing.JFrame {
                         if (counter <= 0 && i >= test.dsCauHoi.size() - 1) {
                             JOptionPane.showMessageDialog(null,
                                     "Chúc mừng bạn đã HOÀN THÀNH bài kiểm tra. Hệ thống đang xử lý kết quả kiểm tra!", "HOÀN THÀNH", JOptionPane.INFORMATION_MESSAGE);
-                            new frmResult().setVisible(true);
+                           
 
                             STOP = 0;
 
                             timer.cancel();
                             try {
                                 System.out.println("Bat dau gui bai thi len server");
-                                tinh_diem(bt);
+                                tinh_diem();
+                                new frmResult(bt).setVisible(true);
 
                             } catch (IOException ex) {
                                 Logger.getLogger(frmExercise1.class.getName()).log(Level.SEVERE, null, ex);
@@ -502,14 +505,15 @@ public class frmExercise1 extends javax.swing.JFrame {
     }
 
     //gửi kết quả về server
-    public static void tinh_diem(BaiThi bt) throws IOException {
+    public static void tinh_diem() throws IOException {
 
         //lưu bài thi để gưi về server
 //        System.out.println("123");
 //        System.out.println( arrList.get(1).cauChon + " CAU TRA LOI");
         //lưu danh sách các câu làm
-        bt = new BaiThi("1443", test.maDe);
+        bt = new BaiThi(mssv, test.maDe);
         bt.dsCauLam = arrList;
+        bt.tinhDiem();
         System.out.println("Bat dau gui bai thi len server");
         dout.writeInt(Server.GUIDETHI);
         dout.flush();

@@ -24,11 +24,13 @@ public class frmHome extends javax.swing.JFrame {
 //    public static Socket sk = null;
     ObjectOutputStream gui;
     ObjectInputStream nhan;
+    String mssv;
 
-    public frmHome(ObjectOutputStream gui, ObjectInputStream nhan) {
+    public frmHome(ObjectOutputStream gui, ObjectInputStream nhan, String mssv) {
         initComponents();
         this.gui = gui;
         this.nhan = nhan;
+        this.mssv = mssv;
     }
 
     /**
@@ -64,7 +66,7 @@ public class frmHome extends javax.swing.JFrame {
         }
 
 //        }
-        new frmExercise1(gui, nhan, made).setVisible(true);
+        new frmExercise1(gui, nhan, made, mssv).setVisible(true);
         this.dispose();
 
     }

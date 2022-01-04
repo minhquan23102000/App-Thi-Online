@@ -260,7 +260,7 @@
                               <EmptySpace min="-2" pref="196" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                              <Component id="txt_cauDung" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="231" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -281,7 +281,7 @@
                       <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                      <Component id="jLabel11" min="-2" pref="31" max="-2" attributes="0"/>
+                      <Component id="txt_cauDung" min="-2" pref="31" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jLabel12" min="-2" pref="40" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
@@ -317,7 +317,7 @@
                 <Property name="text" type="java.lang.String" value="S&#x1ed0; C&#xc2;U &#x110;&#xda;NG"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel11">
+            <Component class="javax.swing.JLabel" name="txt_cauDung">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="36" style="1"/>
