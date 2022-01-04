@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.io.*;
 
 /**
  *
@@ -274,8 +275,12 @@ public class frmPort extends javax.swing.JFrame {
         try {
             // TADA code nút KẾT NỐI
             Socket sk = connect();
-            new frmLogin(sk).setVisible(true);
+            ObjectOutputStream out = new ObjectOutputStream(sk.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(sk.getInputStream());
+           
+            new frmLogin(in, out).setVisible(true);
             this.setVisible(false);
+            
         } catch (Exception ex) {
             Logger.getLogger(frmPort.class.getName()).log(Level.SEVERE, null, ex);
         }

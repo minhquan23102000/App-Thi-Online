@@ -4,11 +4,13 @@
  */
 package com.hutech.appthitracnghiemonline.server.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author PC
  */
-public class CauLam {
+public class CauLam implements Serializable {
     
     //Possible value for cauChon
     public static final int CAU_A = 1;

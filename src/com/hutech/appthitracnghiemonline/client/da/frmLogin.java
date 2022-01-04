@@ -5,13 +5,17 @@
  */
 package com.hutech.appthitracnghiemonline.client.da;
 
+import com.hutech.appthitracnghiemonline.server.Server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,46 +23,60 @@ import javax.swing.JOptionPane;
  * @author ADMIN
  */
 public class frmLogin extends javax.swing.JFrame {
-public Socket sk;
+
+    public Socket sk;
+    private int ClientHandler;
+    ObjectOutputStream gui_server;
+    ObjectInputStream nhan_server;
+
     /**
      * Creates new form frmLogin
+     * @param in
+     * @param out
      */
-    public frmLogin(Socket sk) {
+    public frmLogin(ObjectInputStream in, ObjectOutputStream out) {
+        
+        gui_server = out;// tao luon gui di
+        nhan_server = in;// tao luon nhan vao
         initComponents();
-        this.sk = sk;
     }
 
-    private frmLogin() {       
+    public frmLogin() {
+        initComponents();
     }
 
-    private void login() throws Exception {
-        try{
-            ObjectOutputStream gui_server = new ObjectOutputStream(sk.getOutputStream());// tao luon gui di
-            ObjectInputStream nhan_server = new ObjectInputStream(sk.getInputStream());// tao luon nhan vao
+    
+
+    public void login() throws Exception {
+        String result = "";
+        try {
+
             String username = txtUsername.getText();
             String password = txtPassword.getText();
-            System.out.println(""+username + password);
+            System.out.println(username + password);
+            gui_server.writeInt(Server.LOGIN);
             gui_server.writeUTF(username + "#" + password);// gui du lieu len server
             gui_server.flush();
-            String result = nhan_server.readUTF();
-            result = result.trim();
-            System.out.println("ket qua tu server:" + result);
+//            while (nhan_server.available() != 0) {
+            result = nhan_server.readUTF().trim();
+//            result = result.trim();
+//                System.out.println("Kết quả trả về từ server: " + result);
+
             if (result.equals("1")) {
-                 new frmHome(sk).setVisible(true);
-                txtPassword.setText("");
-                txtUsername.setText("");
+                //new frmHome(sk).setVisible(true);
+                new frmInfo(nhan_server, gui_server).setVisible(true);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Tên đăng nhâp hoặc Pass không đúng", "Đăng nhập Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-            //JOptionPane.showMessageDialog(null, "cập nhật dữ liệu thành công");
-        }catch(Exception e){
+//            }
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
             e.printStackTrace();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -151,7 +169,7 @@ public Socket sk;
 
         txtUsername.setBackground(new java.awt.Color(204, 255, 204));
         txtUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtUsername.setText("TADA");
+        txtUsername.setText("yup");
         txtUsername.setBorder(null);
 
         txtPassword.setBackground(new java.awt.Color(204, 255, 204));
@@ -327,18 +345,18 @@ public Socket sk;
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel5AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel5AncestorAdded
-        
+
     }//GEN-LAST:event_jLabel5AncestorAdded
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TADA code nút ĐĂNG NHẬP
-                if (txtUsername.getText().equals("")) {
+        if (txtUsername.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập tên đăng nhập!");
         } else if (txtPassword.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập mật khẩu!");
         } else {
             try {
-                System.out.println("Test");
+//                System.out.println("Test");
                 login();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);
